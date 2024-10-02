@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleArena
 {
+    //creating a soldier class
     internal class Soldier : Enemy
     {
         public Soldier(string name, float maxHealth, float attackPower, float defensePower) : base(name, maxHealth, attackPower, defensePower)

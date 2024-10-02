@@ -7,6 +7,7 @@ using System.Xml.Linq;
 
 namespace BattleArena
 {
+    //creating enemy class with the character class as its parent class
     internal abstract class Enemy : Character
     {
         public Enemy(string name, float maxHealth, float attackPower, float defensePower) : base(name, maxHealth, attackPower, defensePower)

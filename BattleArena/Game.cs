@@ -12,6 +12,7 @@ namespace BattleArena
     
     internal class Game
     {
+        //all the character and enemy used in the game
         private bool _gameOver = false;
         Character player = new(name: "Player", maxHealth: 100, attackPower: 20, defensePower: 10);
         Goblin goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
@@ -23,7 +24,7 @@ namespace BattleArena
         private int i;
 
         internal AutomaticDeath Death { get => death; set => death = value; }
-
+        //creating a function for use of two features.
         private int GetInput(string description, string option1, string option2)
         {
             ConsoleKeyInfo key;
@@ -64,6 +65,7 @@ namespace BattleArena
             Console.WriteLine();
             return InputRecieved;
         }
+        //creating function use for three features
         private int GetChoice(string description, string option1, string option2, string option3)
         {
             ConsoleKeyInfo key;
@@ -109,11 +111,13 @@ namespace BattleArena
             Console.WriteLine();
             return InputRecieved;
         }
+        //making the inputs for battle
         private void BattleFunction(Character baddue)
         {
             while (player.Health > 0 && baddue.Health > 0)
             {
                 int input = GetChoice("It is your turn. What will you do?", "Attack", "Heal", "Run");
+                //player will attack and game will print out stats after telling the damage.
                 if (input == 1)
                 {
                     player.Attack(baddue);
@@ -130,12 +134,14 @@ namespace BattleArena
                     Console.ReadKey();
                     Console.Clear();
                 }
+                //player will be able to heal
                 else if (input == 2)
                 {
                     player.Heal(10);
                     Console.WriteLine("You have healed 10 health.");
                     Console.ReadKey();
                 }
+                //player will try to run but will die
                 else if (input == 3)
                 {
                     Console.WriteLine("You tried to run but were automatically killed.");
@@ -168,6 +174,7 @@ namespace BattleArena
             skeleton = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
             soldier = new(name: "Soldier", maxHealth: 100, attackPower: 23, defensePower: 15);
             Enemy = [goblin, skeleton, soldier];
+            //takes the battle function and uses it with every enemy type
             for (int i = 0; i < Enemy.Length; i++) //(int i = goblin; goblin.MaxHealth == goblin; i++) 
             {
                 Enemy baddue = Enemy[i];

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleArena
 {
+    //creating a goblin class
     internal class Goblin : Enemy
     {
         public Goblin(string name, float maxHealth, float attackPower, float defensePower) : base(name, maxHealth, attackPower, defensePower)

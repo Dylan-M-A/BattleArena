@@ -8,12 +8,13 @@ namespace BattleArena
 {
     internal class Character
     {
+        //giving characters their stats
         private string _name = "Character";
         private float _maxHealth = 10;
         private float _health = 10;
         private float _attackPower = 1;
         private float _defensePower = 1;
-
+        //allowing those stats to be used for child classes
         public string Name { get { return _name; } protected set { _name = value; } }
         public float MaxHealth { get { return _maxHealth; } protected set { _maxHealth = value; } }
         public float Health
@@ -36,7 +37,7 @@ namespace BattleArena
             _attackPower = attackPower;  
             _defensePower = defensePower;
         }
-
+        //making an attack function for the characters to use
         public float Attack(Character other)
         {
 
@@ -44,7 +45,7 @@ namespace BattleArena
             other.TakeDamage(damage);
             return damage;
         }
-
+        //all characters will be able to deal damage
         public void TakeDamage(float damage)
         {
             Health -= damage;
@@ -53,7 +54,7 @@ namespace BattleArena
                 Die();
             }
         }
-
+        //the player will use this function to heal a limited amount of health
         public float Heal(Character character)
         {
             float health = Math.Max(10, _health + character.MaxHealth);
@@ -64,11 +65,12 @@ namespace BattleArena
         {
             Health += health;
         }
-
+        //when a character dies a string will appear with that characters name
         public void Die()
         {
             Console.WriteLine(Name + " has died!");
         }
+        //printring out stats
         public void PrintStats()
         {
             Console.WriteLine("Name:          " + Name);

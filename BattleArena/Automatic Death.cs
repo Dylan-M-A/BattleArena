@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BattleArena
 {
+    //creating a death feature
     internal class AutomaticDeath
     {
         private string _name = "Death";
@@ -27,6 +28,7 @@ namespace BattleArena
             _name = name;
             _attackPower = attackPower;
         }
+        //allows death to kill you automatically
         public float Attack(Character other)
         {
             float damage = Math.Max(0, _attackPower - other.DefensePower);
