@@ -60,10 +60,9 @@ namespace BattleArena
             character.Heal(health);
             return health;
         }
-
-        private void Heal(float health)
+        public void Heal(float health)
         {
-            throw new NotImplementedException();
+            Health += health;
         }
 
         public void Die()
@@ -76,11 +75,6 @@ namespace BattleArena
             Console.WriteLine("Health:        " + Health + "/" + MaxHealth);
             Console.WriteLine("Attack Power:  " + AttackPower);
             Console.WriteLine("Defense Power: " + DefensePower);
-        }
-
-        internal static void Heal(int v)
-        {
-            throw new NotImplementedException();
         }
     }
 }

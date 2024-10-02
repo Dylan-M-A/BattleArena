@@ -8,10 +8,8 @@ namespace BattleArena
 {
     internal class Goblin : Enemy
     {
-        private float _maxHealth;
         public Goblin(string name, float maxHealth, float attackPower, float defensePower) : base(name, maxHealth, attackPower, defensePower)
         {
-            maxHealth = _maxHealth;
         }
 
         public override void SpecialAttack()

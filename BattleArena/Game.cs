@@ -13,12 +13,14 @@ namespace BattleArena
     internal class Game
     {
         private bool _gameOver = false;
-        Character player = new(name: "Player", maxHealth: 100, attackPower: 10, defensePower: 5);
-        Goblin goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 3);
-        AutomaticDeath death = new(name: "Death", attackPower: 1000000);
+        Character player = new(name: "Player", maxHealth: 100, attackPower: 20, defensePower: 10);
+        Goblin goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
         Skeleton skeleton = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
         Soldier soldier = new(name: "Soldier", maxHealth: 100, attackPower: 23, defensePower: 15);
-        Enemy[] enemy;
+        AutomaticDeath death = new(name: "Death", attackPower: 1000000);
+        Enemy[] Enemy;
+        Enemy baddue;
+        private int i;
 
         internal AutomaticDeath Death { get => death; set => death = value; }
 
@@ -107,40 +109,22 @@ namespace BattleArena
             Console.WriteLine();
             return InputRecieved;
         }
-
-        private void Start()
-            //starts the game with printing stats
+        private void BattleFunction(Character baddue)
         {
-            enemy = [goblin, skeleton, soldier];
-            Console.WriteLine("Your first opponent is a goblin.");
-            player = new Character(name: "", maxHealth: 100, attackPower: 10, defensePower: 5);
-            goblin = new Goblin(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
-            player.PrintStats();
-            Console.WriteLine();
-            goblin.PrintStats();
-            Console.Read();
-        }
-        private void Update()
-            //player fights enemys and has player input fot attack, heal, and run.
-        {
-            player = new Character(name: "Player", maxHealth: 100, attackPower: 10, defensePower: 5);
-            goblin = new Goblin(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
-            for (int i = 0; i < enemy[i].length; i++) //(int i = goblin; goblin.MaxHealth == goblin; i++) 
+            while (player.Health > 0 && baddue.Health > 0)
             {
-                Enemy baddue = enemy[i];
-                Console.ReadKey();
                 int input = GetChoice("It is your turn. What will you do?", "Attack", "Heal", "Run");
                 if (input == 1)
                 {
                     player.Attack(baddue);
                     baddue.Attack(player);
                     Console.WriteLine();
-                    Console.WriteLine(player.Name + " did " + " damage to " + baddue.Name + "!");
+                    Console.WriteLine(player.Name + " did " + player.AttackPower + " damage to " + baddue.Name + "!");
                     baddue.PrintStats();
                     Console.WriteLine();
                     Console.ReadKey();
                     Console.Clear();
-                    Console.WriteLine(baddue.Name + " did " + " damage to " + player.Name + "!");
+                    Console.WriteLine(baddue.Name + " did " + baddue.AttackPower + " damage to " + player.Name + "!");
                     player.PrintStats();
                     Console.WriteLine();
                     Console.ReadKey();
@@ -148,7 +132,9 @@ namespace BattleArena
                 }
                 else if (input == 2)
                 {
-                    Character.Heal(10);
+                    player.Heal(10);
+                    Console.WriteLine("You have healed 10 health.");
+                    Console.ReadKey();
                 }
                 else if (input == 3)
                 {
@@ -160,12 +146,64 @@ namespace BattleArena
                     break;
                 }
             }
+        }
+
+        private void Start()
+            //starts the game with printing stats
+        {
+            Enemy = [goblin, skeleton, soldier];
+            Console.WriteLine("Your first opponent is a goblin.");
+            player = new Character(name: "", maxHealth: 100, attackPower: 20, defensePower: 10);
+            goblin = new Goblin(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
+            player.PrintStats();
+            Console.WriteLine();
+            goblin.PrintStats();
+            Console.Read();
+        }
+        private void Update()
+            //player fights enemys and has player input fot attack, heal, and run.
+        {
+            player = new(name: "Player", maxHealth: 100, attackPower: 20, defensePower: 10);
+            goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
+            skeleton = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
+            soldier = new(name: "Soldier", maxHealth: 100, attackPower: 23, defensePower: 15);
+            Enemy = [goblin, skeleton, soldier];
+            for (int i = 0; i < Enemy.Length; i++) //(int i = goblin; goblin.MaxHealth == goblin; i++) 
+            {
+                Enemy baddue = Enemy[i];
+                Console.ReadKey();
+                if (baddue == goblin)
+                {
+                    BattleFunction(baddue);
+                }
+                else if (baddue == skeleton)
+                {
+                    Console.WriteLine("Your next opponent is a skeleton.");
+                    player.PrintStats();
+                    Console.WriteLine();
+                    skeleton.PrintStats();
+                    Console.WriteLine();
+                    Console.ReadKey();
+                    BattleFunction(baddue);
+                }
+                else if (baddue == soldier)
+                {
+                    Console.WriteLine("Your final opponent is a soldier.");
+                    player.PrintStats();
+                    Console.WriteLine();
+                    soldier.PrintStats();
+                    Console.WriteLine();
+                    Console.ReadKey();
+                    BattleFunction(baddue);
+                }
+            }
             Console.WriteLine();
             _gameOver = true;
         }
         private void End()
             //ends game
         {
+            Console.WriteLine("You have won all the battles. You are now the champion.");
             Console.ReadKey();
         }
         public void Run()
