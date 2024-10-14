@@ -14,9 +14,10 @@ namespace BattleArena
     {
         //all the character and enemy used in the game
         private bool _gameOver = false;
-        Character player = new(name: "Player", maxHealth: 100, attackPower: 20, defensePower: 10);
-        Goblin goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
-        Skeleton skeleton = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
+        Character player = new(name: "Player", maxHealth: 100, attackPower: 25, defensePower: 10);
+        Gobling gobling = new(name: "Gobling", maxHealth: 10, attackPower: 5, defensePower: 1);
+        GoblinKing goblinking = new(name: "Goblin King", maxHealth: 50, attackPower: 25, defensePower: 10);
+        SkeletonArcher skeletonarcher = new(name: "Skeleton Archer", maxHealth: 25, attackPower: 10, defensePower: 0);
         Soldier soldier = new(name: "Soldier", maxHealth: 100, attackPower: 23, defensePower: 15);
         AutomaticDeath death = new(name: "Death", attackPower: 1000000);
         Enemy[] Enemy;
@@ -123,16 +124,19 @@ namespace BattleArena
                     player.Attack(baddue);
                     baddue.Attack(player);
                     Console.WriteLine();
-                    Console.WriteLine(player.Name + " did " + player.AttackPower + " damage to " + baddue.Name + "!");
+                    Console.WriteLine(player.Name + " did " + (player.AttackPower - baddue.DefensePower) + " damage to " + baddue.Name + "!");
                     baddue.PrintStats();
                     Console.WriteLine();
                     Console.ReadKey();
                     Console.Clear();
-                    Console.WriteLine(baddue.Name + " did " + baddue.AttackPower + " damage to " + player.Name + "!");
-                    player.PrintStats();
-                    Console.WriteLine();
-                    Console.ReadKey();
-                    Console.Clear();
+                    if (baddue.Health > 0)
+                    {
+                        Console.WriteLine(baddue.Name + " did " + (baddue.AttackPower - player.DefensePower) + " damage to " + player.Name + "!");
+                        player.PrintStats();
+                        Console.WriteLine();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                 }
                 //player will be able to heal
                 else if (input == 2)
@@ -157,42 +161,53 @@ namespace BattleArena
         private void Start()
             //starts the game with printing stats
         {
-            Enemy = [goblin, skeleton, soldier];
-            Console.WriteLine("Your first opponent is a goblin.");
-            player = new Character(name: "", maxHealth: 100, attackPower: 20, defensePower: 10);
-            goblin = new Goblin(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
+            Enemy = [gobling, goblinking, skeletonarcher, soldier];
+            Console.WriteLine("Your first opponent is a gobling.");
+            player = new Character(name: "", maxHealth: 100, attackPower: 25, defensePower: 10);
+            gobling = new Gobling(name: "Gobling", maxHealth: 10, attackPower: 5, defensePower: 1);
             player.PrintStats();
             Console.WriteLine();
-            goblin.PrintStats();
+            gobling.PrintStats();
             Console.Read();
         }
         private void Update()
             //player fights enemys and has player input fot attack, heal, and run.
         {
-            player = new(name: "Player", maxHealth: 100, attackPower: 20, defensePower: 10);
-            goblin = new(name: "Goblin", maxHealth: 10, attackPower: 5, defensePower: 1);
-            skeleton = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
+            player = new(name: "Player", maxHealth: 100, attackPower: 25, defensePower: 10);
+            gobling = new(name: "Gobling", maxHealth: 10, attackPower: 5, defensePower: 1);
+            goblinking = new(name: "Goblin King", maxHealth: 50, attackPower: 25, defensePower: 10);
+            skeletonarcher = new(name: "Skeleton", maxHealth: 40, attackPower: 10, defensePower: 0);
             soldier = new(name: "Soldier", maxHealth: 100, attackPower: 23, defensePower: 15);
-            Enemy = [goblin, skeleton, soldier];
+            Enemy = [gobling, goblinking,  skeletonarcher, soldier];
             //takes the battle function and uses it with every enemy type
             for (int i = 0; i < Enemy.Length; i++) //(int i = goblin; goblin.MaxHealth == goblin; i++) 
             {
                 Enemy baddue = Enemy[i];
                 Console.ReadKey();
-                if (baddue == goblin)
+                if (baddue == gobling)
                 {
                     BattleFunction(baddue);
                 }
-                else if (baddue == skeleton)
+                else if (baddue == goblinking)
                 {
-                    Console.WriteLine("Your next opponent is a skeleton.");
+                    Console.WriteLine("Your next opponent is the Goblin King.");
                     player.PrintStats();
                     Console.WriteLine();
-                    skeleton.PrintStats();
+                    goblinking.PrintStats();
                     Console.WriteLine();
                     Console.ReadKey();
                     BattleFunction(baddue);
                 }
+                else if (baddue == skeletonarcher)
+                {
+                    Console.WriteLine("You're now facing a skeleton archer.");
+                    player.PrintStats();
+                    Console.WriteLine();
+                    skeletonarcher.PrintStats();
+                    Console.WriteLine();
+                    Console.ReadKey();
+                    BattleFunction(baddue);
+                }                
                 else if (baddue == soldier)
                 {
                     Console.WriteLine("Your final opponent is a soldier.");
